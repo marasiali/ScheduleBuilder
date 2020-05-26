@@ -37,20 +37,40 @@ def last_non_conflict(class_list:list, item_index:int) -> int:
             or class_list[i].week_day != class_list[item_index].week_day:
             return i
 
-classes = [
-    ClassSection('G', 2, WeekDay.SAT, 10, 12),
-    ClassSection('A', 3, WeekDay.SAT, 8, 10),
-    ClassSection('I', 3, WeekDay.SAT, 14, 16),
-    ClassSection('C', 2, WeekDay.SAT, 8, 9),
-    ClassSection('F', 3, WeekDay.SAT, 11, 13),
-    ClassSection('B', 3, WeekDay.SAT, 9, 11),
-    ClassSection('E', 3, WeekDay.SAT, 10, 12),
-    ClassSection('H', 2, WeekDay.SAT, 11, 12),
-    ClassSection('D', 2, WeekDay.SAT, 10, 11)
-]
+classes = []
+n = int(input("Please enter the number of classes :"))
+print("Enter each class details in one row with this condition :")
+print("ClassName[SPACE]WeekDayAbbr[SPACE]UNITS[SPACE]StartTime(in hour)-EndTime(in hour)\n")
+print("     Example :")
+print("       Math SAT 3 8-10\n")
+
+for i in range(n):
+    class_name, week_day_abbr, units, class_time = input().split()
+    week_day_abbr = week_day_abbr.upper()
+    week_day = None
+    if week_day_abbr == "SAT":
+        week_day = WeekDay.SAT
+    elif week_day_abbr == "SUN":
+        week_day = WeekDay.SUN
+    elif week_day_abbr == "MON":
+        week_day = WeekDay.MON
+    elif week_day_abbr == "TUE":
+        week_day = WeekDay.TUE
+    elif week_day_abbr == "WED":
+        week_day = WeekDay.WED
+    elif week_day_abbr == "THU":
+        week_day = WeekDay.THU
+    elif week_day_abbr == "FRI":
+        week_day = WeekDay.FRI
+    else:
+        raise RuntimeError("Invalid weekDay !")
+    units = int(units)
+    start_time, end_time = list(map(int, class_time.split('-')))
+    if start_time > end_time:
+        raise RuntimeError("Invalid time !")
+    classes.append(ClassSection(class_name, units, week_day, start_time, end_time))
 
 classes.sort(key=lambda item: (item.week_day, item.end_time, item.start_time))
-n = len(classes)
 
 # shift 1 item to right to change index to 1-BASED (start index from 1)
 classes.insert(0, None)
@@ -77,6 +97,7 @@ for i in range(1, n+1):
         # [:] used to copy list
         unit_select.append(unit_select[i-1][:])
 
+print('\n--------------------------------------------------------\n')
 print("MAX UNIT CAN BE SELECTED :", unit_select[n][0])
 for i, schedule in enumerate(unit_select[n][1]):
     print('\nSCHEDULE ({}) :'.format(i+1))
