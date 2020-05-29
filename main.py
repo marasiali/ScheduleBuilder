@@ -9,7 +9,7 @@ class WeekDay(IntEnum):
     FRI = 6
 
 class ClassSection:
-    def __init__(self, name:str, units:int, week_day:WeekDay, start_time:int, end_time:int):
+    def __init__(self, name:str, units:int, week_day:WeekDay, start_time:float, end_time:float):
         self.name = name
         self.units = units
         self.week_day = week_day
@@ -65,7 +65,7 @@ for i in range(n):
     else:
         raise RuntimeError("Invalid weekDay !")
     units = int(units)
-    start_time, end_time = list(map(int, class_time.split('-')))
+    start_time, end_time = list(map(float, class_time.split('-')))
     if start_time > end_time:
         raise RuntimeError("Invalid time !")
     classes.append(ClassSection(class_name, units, week_day, start_time, end_time))
